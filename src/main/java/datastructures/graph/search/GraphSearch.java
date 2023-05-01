@@ -1,12 +1,15 @@
-package datastructures.graph;
+package datastructures.graph.search;
+
+import datastructures.graph.Graph;
+import datastructures.graph.GraphEdge;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static datastructures.graph.GraphSearch.VertexAttributes.VertexColor.WHITE;
+import static datastructures.graph.search.GraphSearch.VertexAttributes.VertexColor.WHITE;
 
-sealed class GraphSearch<T> permits BFS, DFS {
+abstract sealed class GraphSearch<T> permits BFS, DFS {
 
     protected HashMap<T, VertexAttributes<T>> vertexAttributesMap =  new HashMap<>();
 
@@ -17,7 +20,6 @@ sealed class GraphSearch<T> permits BFS, DFS {
     GraphSearch(Graph<T> g){
         adjacencyMap = g.asAdjacencyMap();
         this.g = g;
-
     }
 
     protected static class VertexAttributes<E> {

@@ -1,11 +1,10 @@
 package datastructures.tree;
 
-import com.sun.source.tree.Tree;
 
-public abstract class TreeAugmentation<T extends Object> {
+public abstract class TreeAugmentation<T> {
     final String key;
     T value;
-    T defaultValue = null;
+    T defaultValue;
 
     protected TreeAugmentation(String key , T value , T defaultValue) {
         this.key = key;
@@ -31,7 +30,7 @@ public abstract class TreeAugmentation<T extends Object> {
         if(tree==null)return null;
         if(tree.augmentations == null) return null;
         if(tree.augmentations.isEmpty()) return null;
-        return (TreeAugmentation<T>) tree.augmentations.stream().filter(a -> a.equals(this)).findFirst().orElse(null);
+        return (TreeAugmentation<T>) tree.augmentations.stream().filter(a -> a.key.equals(this.key)).findFirst().orElse(null);
     }
 
 

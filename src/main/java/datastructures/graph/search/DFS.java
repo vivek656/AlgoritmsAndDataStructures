@@ -1,18 +1,20 @@
-package datastructures.graph;
+package datastructures.graph.search;
 
+import datastructures.graph.Graph;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 
-import static datastructures.graph.GraphSearch.VertexAttributes.VertexColor.*;
+import static datastructures.graph.search.GraphSearch.VertexAttributes.VertexColor.*;
 
-public non-sealed class DFS<T> extends GraphSearch<T>{
+public non-sealed class DFS<T> extends GraphSearch<T> {
 
     private int globalTimer = 0;
     private DFS(Graph<T> g) {
         super(g);
     }
+
 
     private void initializeAttributes(){
         if(g == null)
@@ -37,6 +39,7 @@ public non-sealed class DFS<T> extends GraphSearch<T>{
             finishTime = -1;
         }
 
+
     }
 
     @NotNull
@@ -50,9 +53,9 @@ public non-sealed class DFS<T> extends GraphSearch<T>{
             throw new IllegalStateException("Cant run dfs , without graph or vertex information");
         initializeAttributes();
         globalTimer = 0;
-        for (T u : vertexAttributesMap.keySet()){
-            if(vertexAttributesMap.get(u).colour == WHITE){
-                dfsVisit(getAttributesFor(u));
+        for (var entry : vertexAttributesMap.entrySet()){
+            if(entry.getValue().colour == WHITE){
+                dfsVisit(getAttributesFor((entry.getKey())));
             }
         }
     }
@@ -67,7 +70,7 @@ public non-sealed class DFS<T> extends GraphSearch<T>{
         u.colour = GRAY;
 
         for (var outgoingVertex : adjacencyMap.getOrDefault(u.key , Collections.emptySet())){
-            var v = getAttributesFor(outgoingVertex.end);
+            var v = getAttributesFor(outgoingVertex.getEnd());
             if(v.colour==WHITE){
                 v.predecessor = u;
                 dfsVisit(v);

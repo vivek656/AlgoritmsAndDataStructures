@@ -7,14 +7,13 @@ import java.util.function.Function;
 /**
  * counting sort given array of size n  from set of k no, sort via random addressing
  * in O(n) time , for n ~ k
- * we cant make k too high , so that array size will be very large , upper bounder by word size i.e. 64 bytes
+ * we cant make k too high , so that array size will be very large , upper bounder by word size i.e. 64 bits
  * we also needed this sort to be stable , i.e. relative order of objects (with same key value) must be maintained.<br>
  * <B>mapper</B> needed to map an object to integral key <br>
  * range of mapper function should be non-zero non-negative Integers
  */
 public class CountingSort<T>  {
-    private Integer[] keysArray;
-    private int k;
+    private final int k;
 
     private Function<T , Integer> mapper = T::hashCode;
     public CountingSort(Integer bounds , Function<T , Integer> intMapper){

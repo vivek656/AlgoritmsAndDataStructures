@@ -1,13 +1,14 @@
-package datastructures.graph;
+package datastructures.graph.search;
 
-import java.util.Collections;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Map;
+import datastructures.graph.Graph;
+import datastructures.graph.GraphEdge;
 
-import static datastructures.graph.GraphSearch.VertexAttributes.VertexColor.*;
+import java.util.*;
 
-public non-sealed class BFS<T> extends GraphSearch<T>{
+import static datastructures.graph.search.GraphSearch.VertexAttributes.VertexColor.*;
+
+
+public non-sealed class BFS<T> extends GraphSearch<T> {
 
     BFSVertexAttributes<T> source;
 
@@ -29,6 +30,7 @@ public non-sealed class BFS<T> extends GraphSearch<T>{
         for (var v : adjacencyMap.keySet()) {
             vertexAttributesMap.put(v, new BFSVertexAttributes<>(v));
         }
+        this.source = getAttributesFor(source);
     }
 
     public void run(T source){
@@ -40,7 +42,7 @@ public non-sealed class BFS<T> extends GraphSearch<T>{
         while (!vertexQueue.isEmpty()){
             var u = vertexQueue.poll();
             for (GraphEdge<T,T> graphVertex : adjacencyMap.getOrDefault(u.key , Collections.emptySet()) ){
-                var v = getAttributesFor(graphVertex.end);
+                var v = getAttributesFor(graphVertex.getEnd());
                 if(v.colour == WHITE){
                     v.colour = GRAY;
                     v.distance = u.distance +1;
@@ -50,6 +52,35 @@ public non-sealed class BFS<T> extends GraphSearch<T>{
             }
             u.colour = BLACK;
         }
+    }
+
+    public Map<T , List<T>> singleSourceShortestPaths(){
+        if(source==null){
+            throw new IllegalStateException("Source must not be null , please call run with source vertex");
+        }
+        var result = new HashMap<T, List<T>>();
+        for(T v : adjacencyMap.keySet()){
+            result.put(v , getPathFromVertex(v));
+        }
+        return result;
+    }
+    protected List<T> getPathFromVertex(T v){
+        var resultList = new LinkedList<T>();
+        if(!singlePairReachability(v)) return resultList;
+        var nextVertex = getAttributesFor(v);
+        while(nextVertex!=null){
+            resultList.addFirst(nextVertex.key);
+            nextVertex = nextVertex.predecessor;
+        }
+        return resultList;
+    }
+
+    public boolean singlePairReachability(T end){
+        return vertexAttributesMap.containsKey(end) && !getAttributesFor(end).isAtInfiniteDistance();
+    }
+
+    public List<T> singlePairShortestPath(T end){
+        return getPathFromVertex(end);
     }
 
     private BFSVertexAttributes<T> getAttributesFor(T u){
