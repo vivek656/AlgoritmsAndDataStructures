@@ -68,10 +68,11 @@ public non-sealed class BFS<T> extends GraphSearch<T> {
         var resultList = new LinkedList<T>();
         if(!singlePairReachability(v)) return resultList;
         var nextVertex = getAttributesFor(v);
-        while(nextVertex!=null){
+        while(nextVertex!=null && nextVertex.key!=source.key){
             resultList.addFirst(nextVertex.key);
             nextVertex = nextVertex.predecessor;
         }
+        resultList.addFirst(source.key);
         return resultList;
     }
 

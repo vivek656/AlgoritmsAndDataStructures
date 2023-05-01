@@ -64,8 +64,10 @@ public class Graph<T> {
 
     @Override
     public String toString() {
-        return "Graph{" +
-                "adjacencyMap=" + adjacencyMap +
-                '}';
+        var sb = new StringBuilder("{");
+        sb.append("\r\n");
+        adjacencyMap.forEach((key, value) -> sb.append("  ").append(key).append("=").append(value).append("\r\n"));
+        sb.append("}");
+        return sb.toString();
     }
 }

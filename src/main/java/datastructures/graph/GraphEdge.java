@@ -4,6 +4,7 @@ public class GraphEdge<T,R> {
     private final T start ;
     private final R end ;
 
+
     GraphEdge(T start, R end){
         this.start = start;
         this.end = end;

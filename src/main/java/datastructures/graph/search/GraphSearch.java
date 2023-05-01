@@ -1,5 +1,6 @@
 package datastructures.graph.search;
 
+import com.google.common.base.Objects;
 import datastructures.graph.Graph;
 import datastructures.graph.GraphEdge;
 
@@ -24,6 +25,18 @@ abstract sealed class GraphSearch<T> permits BFS, DFS {
 
     protected static class VertexAttributes<E> {
 
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof VertexAttributes<?> that)) return false;
+            return Objects.equal(key, that.key);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(key);
+        }
 
         protected enum VertexColor {
             WHITE, GRAY, BLACK

@@ -2,13 +2,15 @@ package problemsessionone;
 
 import algorithms.KarpRabinStringSearch;
 import datastructures.graph.Graph;
+import datastructures.graph.GraphVisualize;
 import datastructures.graph.search.BFS;
 import datastructures.graph.search.DFS;
+import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.LinkedList;
 
 public class Main {
 
@@ -16,25 +18,29 @@ public class Main {
     private static final String LOG_INFO = "{}"; //needed for logging message stub
 
     public static void main(String[] args) {
-
        graphTest();
 
     }
 
     public static void graphTest(){
 
-        List<Integer[]> pairs = List.of(new Integer[]{1,2} , new Integer[]{0,1}  , new Integer[]{2,0} , new Integer[]{3,4} ,
-        new Integer[]{2,3} ,new Integer[]{5,6} , new Integer[]{7,8} , new Integer[]{6,8}  , new Integer[]{9,0} ,
-                new Integer[]{7,9} , new Integer[]{10,13} , new Integer[]{13,20});
-        var graph = Graph.fromPairs(pairs);
-        logger.info(LOG_INFO , graph);
+        var listOfPairs = new LinkedList<Integer[]>();
+        for(int i = 0; i< 100 ; i++){
+            listOfPairs.add(new Integer[]{
+                    RandomUtils.nextInt(1,30) , RandomUtils.nextInt(1,30)
+            });
+        }
+        var graph = Graph.fromPairs(listOfPairs);
+        logger.info("GRAPH {}" , graph);
         var dfs = DFS.of(graph);
         dfs.run();
         var bfs = BFS.of(graph);
-        bfs.run(7);
-        logger.info(LOG_INFO , bfs.singleSourceShortestPaths());
-
-
+        bfs.run(listOfPairs.get(RandomUtils.nextInt(1,listOfPairs.size()))[0]);
+        logger.info("BFS_SSSP {}" , bfs.singleSourceShortestPaths());
+        logger.info("DFC TOPOLOGICAL_SORT {}" , dfs.topologicalSort());
+        var visualGraph = GraphVisualize.of(graph)
+                .withName("GRAPH_TEST").build();
+        visualGraph.display();
     }
 
     public static void karpRabinTest() throws IOException {
