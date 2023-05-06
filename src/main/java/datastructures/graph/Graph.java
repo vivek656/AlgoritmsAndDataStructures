@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  * graph is a collection of ordered pair , V -> vertices
- * (u,v) one orderpair is called edge
+ * (u,v) one order pair is called edge
  * Directed Graph
  */
 public class Graph<T> {

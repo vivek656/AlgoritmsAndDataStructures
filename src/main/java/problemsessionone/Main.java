@@ -2,6 +2,7 @@ package problemsessionone;
 
 import algorithms.KarpRabinStringSearch;
 import datastructures.graph.Graph;
+import datastructures.graph.GraphUtils;
 import datastructures.graph.GraphVisualize;
 import datastructures.graph.search.BFS;
 import datastructures.graph.search.DFS;
@@ -27,7 +28,7 @@ public class Main {
         var listOfPairs = new LinkedList<Integer[]>();
         for(int i = 0; i< 100 ; i++){
             listOfPairs.add(new Integer[]{
-                    RandomUtils.nextInt(1,30) , RandomUtils.nextInt(1,30)
+                    RandomUtils.nextInt(1,60) , RandomUtils.nextInt(70,80)
             });
         }
         var graph = Graph.fromPairs(listOfPairs);
@@ -38,6 +39,7 @@ public class Main {
         bfs.run(listOfPairs.get(RandomUtils.nextInt(1,listOfPairs.size()))[0]);
         logger.info("BFS_SSSP {}" , bfs.singleSourceShortestPaths());
         logger.info("DFC TOPOLOGICAL_SORT {}" , dfs.topologicalSort());
+        logger.info(LOG_INFO , GraphUtils.validateGraphIsADAG(graph));
         var visualGraph = GraphVisualize.of(graph)
                 .withName("GRAPH_TEST").build();
         visualGraph.display();
