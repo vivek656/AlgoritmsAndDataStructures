@@ -10,7 +10,7 @@ import java.util.function.Function;
 public class HashTableSet<T> implements Iterable<T> {
     private  SimpleDoublyLinkedList<T>[] keyArray;
 
-    private static Double DEFAULT_FILL_RATIO = .6;
+    private static final Double DEFAULT_FILL_RATIO = .6;
     private static final Long LARGE_PRIME = (long) (Math.pow(2, 16) - 1);
 
     private Comparator<T> comparator = (Comparator<T>) Comparator.naturalOrder();
@@ -46,7 +46,7 @@ public class HashTableSet<T> implements Iterable<T> {
         lower = (long) Math.ceil(upper * loadFactor * loadFactor);
     }
 
-    public HashTableSet withComparator(Comparator<T> comparator){
+    public HashTableSet<T> withComparator(Comparator<T> comparator){
         this.comparator = comparator;
         return this;
     }

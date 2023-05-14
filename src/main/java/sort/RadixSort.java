@@ -30,7 +30,7 @@ public class RadixSort {
         var temp = Arrays.copyOf(keys, keys.length);
         for (int i = 0; i < digits; i++) {
             int finalI = i;
-            var countingSort = new CountingSort<Integer>(n, j -> getBitOfZAtPlaceXForBaseY(j, finalI, n));
+            var countingSort = new CountingSort<Integer>(n, j -> getBitOfZBaseYAtPositionX(j, finalI, n));
             temp = countingSort.sort(temp);
         }
         return temp;
@@ -44,9 +44,9 @@ public class RadixSort {
      * @param z no to get bits map of
      * @param x place of bit (O indexed)
      * @param y base
-     * @return bit value at place x
+     * @return a bit value at place x
      */
-    private static int getBitOfZAtPlaceXForBaseY(int z, int x, int y) {
+    private static int getBitOfZBaseYAtPositionX(int z, int x, int y) {
         return (int) (((int) (z % Math.pow(y, (x + 1)))) / (Math.pow(y, x)));
     }
 

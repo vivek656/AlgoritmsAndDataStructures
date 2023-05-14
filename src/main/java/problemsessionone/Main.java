@@ -9,9 +9,14 @@ import datastructures.graph.search.DFS;
 import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sort.HeapSort;
+import sort.RadixSort;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Main {
 
@@ -19,7 +24,7 @@ public class Main {
     private static final String LOG_INFO = "{}"; //needed for logging message stub
 
     public static void main(String[] args) {
-       graphTest();
+        heapSortTest();
 
     }
 
@@ -51,6 +56,28 @@ public class Main {
         var searchString = "chatGPT";
         var cell = KarpRabinStringSearch.search(searchString,inputString);
         logger.info(LOG_INFO,cell.offsets);
+    }
+
+    public static void  radixSortTest(){
+        var integersArray = new ArrayList<Integer>(1000);
+        for(int i = 0 ; i < 1000 ; i++){
+            integersArray.add(RandomUtils.nextInt(10000000,1000000000));
+        }
+        logger.info("ARRAY:BEFORE SORT: {}", integersArray);
+        logger.info("RADIX SORT: {}" , RadixSort.sort(integersArray));
+
+    }
+
+    public static void  heapSortTest(){
+        var integersArray = new ArrayList<Integer>(1000);
+        for(int i = 0 ; i < 1000 ; i++){
+            integersArray.add(RandomUtils.nextInt(100,1000));
+        }
+
+        logger.info("ARRAY:BEFORE SORT: {}", integersArray);
+        var a = integersArray.toArray(new Integer[]{});
+        logger.info("HEAP SORT: {}" , Arrays.toString(HeapSort.sort(a)));
+
     }
 
 }
