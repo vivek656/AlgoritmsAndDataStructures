@@ -1,37 +1,54 @@
 package datastructures.tree;
 
 
-public abstract class TreeAugmentation<T> {
-    final String key;
-    T value;
-    T defaultValue;
+import java.util.Objects;
 
-    protected TreeAugmentation(String key , T value , T defaultValue) {
+public abstract class TreeAugmentation {
+    final String key;
+    Object value;
+    Object defaultValue;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TreeAugmentation that)) return false;
+        return key.equals(that.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key);
+    }
+
+    protected TreeAugmentation(String key, Object value, Object defaultValue) {
         this.key = key;
         this.value = value;
         this.defaultValue = defaultValue;
     }
 
-    public void recompute(BinaryTreeNode tree){
-        TreeAugmentation<T> currentVal = getAugmentation(tree);
-        if(currentVal == null)return;
-        TreeAugmentation<T> leftTree = getAugmentation(tree.left);
-        TreeAugmentation<T> rightTree = getAugmentation(tree.right);
-        recompute(currentVal.getOrDefaultValue() , leftTree.getOrDefaultValue(), rightTree.getOrDefaultValue());
+    public <E> void recompute(BinaryTreeNode<E> tree) {
+        TreeAugmentation leftAug = getAugmentation(tree.left);
+        TreeAugmentation rightAug = getAugmentation(tree.right);
+        Object leftVal = (leftAug!=null && leftAug.getOrDefaultValue().getClass()==getOrDefaultValue().getClass()) ? leftAug.value : defaultValue;
+        Object rightVal = (rightAug!=null && rightAug.getOrDefaultValue().getClass()==getOrDefaultValue().getClass()) ? rightAug.getOrDefaultValue() : defaultValue;
+
+        value = recompute(
+                getOrDefaultValue(),
+                leftVal,
+                rightVal
+        );
     }
-    public T getOrDefaultValue(){
-        if(value!= null)return value;
+
+    public Object getOrDefaultValue() {
+        if (value != null) return value;
         return defaultValue;
     }
 
-    public abstract void recompute(T parentValue, T leftValue, T rightValue);
+    public abstract Object recompute(Object parentValue, Object leftValue, Object rightValue);
 
-    TreeAugmentation<T> getAugmentation(BinaryTreeNode tree){
-        if(tree==null)return null;
-        if(tree.augmentations == null) return null;
-        if(tree.augmentations.isEmpty()) return null;
-        return (TreeAugmentation<T>) tree.augmentations.stream().filter(a -> a.key.equals(this.key)).findFirst().orElse(null);
+    <E> TreeAugmentation getAugmentation(BinaryTreeNode<E> tree) {
+        if (tree == null) return null;
+        if (tree.augmentations == null) return null;
+        if (tree.augmentations.isEmpty()) return null;
+        return tree.augmentations.getOrDefault(key , null);
     }
-
-
 }

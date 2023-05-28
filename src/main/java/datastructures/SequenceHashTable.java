@@ -68,13 +68,12 @@ public class SequenceHashTable<T> implements Iterable<T>{
             atJ.setValue(newValue);
             newValue = currentValue;
         }
-        keySet.insert(new ObjectKeyWrapper(lastIndexPlusOne() , newValue));
+        keySet.insert(new ObjectKeyWrapper<>(lastIndexPlusOne() , newValue));
         return value;
     }
 
-    T insertAtLast(T value){
-        keySet.insert(new ObjectKeyWrapper(lastIndexPlusOne() , value));
-        return value;
+    void insertAtLast(T value){
+        keySet.insert(new ObjectKeyWrapper<>(lastIndexPlusOne() , value));
     }
     T deleteAt(int i){
         if(i>=getSize()) throw new IndexOutOfBoundsException(i);
@@ -93,11 +92,11 @@ public class SequenceHashTable<T> implements Iterable<T>{
     @NotNull
     @Override
     public Iterator<T> iterator() {
-        ArrayList<T> temparray = new ArrayList<>(getSize());
+        ArrayList<T> tempArray = new ArrayList<>(getSize());
         for(int i = 0 , size = getSize() ; i < size ; i++){
-            temparray.add(getAt(i));
+            tempArray.add(getAt(i));
         }
-        return temparray.iterator();
+        return tempArray.iterator();
     }
 
 }

@@ -6,6 +6,7 @@ import datastructures.graph.GraphUtils;
 import datastructures.graph.GraphVisualize;
 import datastructures.graph.search.BFS;
 import datastructures.graph.search.DFS;
+import datastructures.tree.SetBinaryTree;
 import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +25,7 @@ public class Main {
     private static final String LOG_INFO = "{}"; //needed for logging message stub
 
     public static void main(String[] args) {
-        heapSortTest();
-
+        binarySearchTreeTest();
     }
 
     public static void graphTest(){
@@ -78,6 +78,11 @@ public class Main {
         var a = integersArray.toArray(new Integer[]{});
         logger.info("HEAP SORT: {}" , Arrays.toString(HeapSort.sort(a)));
 
+    }
+
+    public static void binarySearchTreeTest(){
+        var bst = new SetBinaryTree<Integer>(List.of(5,8,2,4,3,6));
+        logger.info("BST ORDER_TRAVERSAL: {}" , bst.asList());
     }
 
 }

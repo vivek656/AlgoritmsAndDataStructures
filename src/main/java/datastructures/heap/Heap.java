@@ -25,17 +25,18 @@ public class Heap<T> {
         this.size = arrayAsCBT.length;
     }
 
-    static <T1> ObjectKeyWrapper<Integer , T1> left(T1[] a ,Integer size ,  Integer p){
+
+    private static <T1> ObjectKeyWrapper<Integer , T1> left(T1[] a ,Integer size ,  Integer p){
         var leftIdx = (2*p)+1;
         return leftIdx <= size ? new ObjectKeyWrapper<>(leftIdx , a[leftIdx]) : null;
     }
 
-    static <T1> ObjectKeyWrapper<Integer , T1> right(T1[] a ,Integer size ,  Integer p){
+    private static <T1> ObjectKeyWrapper<Integer , T1> right(T1[] a ,Integer size ,  Integer p){
         var rightIdx = (2*p)+2;
         return rightIdx <= size ? new ObjectKeyWrapper<>(rightIdx, a[rightIdx]) : null;
     }
 
-    static <T1> ObjectKeyWrapper<Integer , T1> parent(T1[] a ,Integer size ,  Integer c){
+    private static <T1> ObjectKeyWrapper<Integer , T1> parent(T1[] a ,Integer size ,  Integer c){
         var parent = (c-1)/2;
         return  (parent >= 0  || (parent) <= size) ? new ObjectKeyWrapper<>(parent , a[parent]) : null;
     }
