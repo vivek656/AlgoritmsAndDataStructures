@@ -1,6 +1,6 @@
 package datastructures.graph.search;
 
-import datastructures.graph.Graph;
+import datastructures.graph.DirectedGraph;
 import datastructures.graph.GraphEdge;
 
 import java.util.*;
@@ -12,11 +12,11 @@ public non-sealed class BFS<T> extends GraphSearch<T> {
 
     BFSVertexAttributes<T> source;
 
-    private BFS(Graph<T> g) {
+    private BFS(DirectedGraph<T> g) {
         super(g);
     }
 
-    public  static <E> BFS<E> of(Graph<E> g) {
+    public  static <E> BFS<E> of(DirectedGraph<E> g) {
         return new BFS<>(g);
     }
 

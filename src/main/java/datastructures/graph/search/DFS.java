@@ -1,7 +1,7 @@
 package datastructures.graph.search;
 
 import com.google.common.base.Objects;
-import datastructures.graph.Graph;
+import datastructures.graph.DirectedGraph;
 import datastructures.graph.GraphEdge;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +14,7 @@ public non-sealed class DFS<T> extends GraphSearch<T> {
 
     private int globalTimer = 0;
 
-    private DFS(Graph<T> g) {
+    private DFS(DirectedGraph<T> g) {
         super(g);
     }
 
@@ -37,7 +37,7 @@ public non-sealed class DFS<T> extends GraphSearch<T> {
 
     @NotNull
     @Contract("_ -> new")
-    public static <E> DFS<E> of(Graph<E> g) {
+    public static <E> DFS<E> of(DirectedGraph<E> g) {
         return new DFS<>(g);
     }
 

@@ -5,7 +5,7 @@ public class GraphEdge<T,R> {
     private final R end ;
 
 
-    GraphEdge(T start, R end){
+    public GraphEdge(T start, R end){
         this.start = start;
         this.end = end;
     }

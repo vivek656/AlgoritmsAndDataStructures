@@ -1,12 +1,12 @@
-package datastructures.tree;
+package datastructures.tree.node;
 
 import java.util.Comparator;
 
 @SuppressWarnings("unchecked")
-public class BinarySearchTreeNode<T> extends BinaryTreeNode<T>{
+public class BinarySearchTreeNode<T> extends BinaryTreeNode<T> {
 
 
-    BinarySearchTreeNode(T data) {
+    public BinarySearchTreeNode(T data) {
         super(data);
     }
 
@@ -18,7 +18,7 @@ public class BinarySearchTreeNode<T> extends BinaryTreeNode<T>{
         return (BinarySearchTreeNode<T>) right;
     }
 
-    BinarySearchTreeNode<T> subtreeFind(T key , Comparator<T> comparator){
+    public BinarySearchTreeNode<T> subtreeFind(T key , Comparator<T> comparator){
         if(comparator.compare(data , key) > 0 && left!=null){
             return getLeft().subtreeFind(key, comparator);
         }else if (comparator.compare(data, key) < 0 && right!=null){
@@ -30,7 +30,7 @@ public class BinarySearchTreeNode<T> extends BinaryTreeNode<T>{
         }
     }
 
-    BinarySearchTreeNode<T> subtreeFindNext(T key , Comparator<T> comparator){
+    public BinarySearchTreeNode<T> subtreeFindNext(T key , Comparator<T> comparator){
         if(comparator.compare(data,key) <= 0){
             if(right!=null)return getRight().subtreeFindNext(key, comparator);
             else return null;
@@ -52,7 +52,7 @@ public class BinarySearchTreeNode<T> extends BinaryTreeNode<T>{
         return this;
     }
 
-    BinarySearchTreeNode<T> subtreeInsert(BinarySearchTreeNode<T> nodeToInsert, Comparator<T> comparator){
+    public BinarySearchTreeNode<T> subtreeInsert(BinarySearchTreeNode<T> nodeToInsert, Comparator<T> comparator){
         if(comparator.compare(data, nodeToInsert.data) > 0){
             if(left!=null) return getLeft().subtreeInsert(nodeToInsert , comparator);
             else return (BinarySearchTreeNode<T>) subtreeInsertBefore(nodeToInsert);

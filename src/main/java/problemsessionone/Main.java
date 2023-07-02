@@ -1,11 +1,12 @@
 package problemsessionone;
 
 import algorithms.KarpRabinStringSearch;
-import datastructures.graph.Graph;
+import datastructures.graph.DirectedGraph;
 import datastructures.graph.GraphUtils;
 import datastructures.graph.GraphVisualize;
 import datastructures.graph.search.BFS;
 import datastructures.graph.search.DFS;
+import datastructures.tree.AVLSetBinaryTree;
 import datastructures.tree.SetBinaryTree;
 import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class Main {
     private static final String LOG_INFO = "{}"; //needed for logging message stub
 
     public static void main(String[] args) {
-        binarySearchTreeTest();
+        avlSearchTreeTest();
     }
 
     public static void graphTest(){
@@ -36,7 +37,7 @@ public class Main {
                     RandomUtils.nextInt(1,60) , RandomUtils.nextInt(70,80)
             });
         }
-        var graph = Graph.fromPairs(listOfPairs);
+        var graph = DirectedGraph.fromPairs(listOfPairs);
         logger.info("GRAPH {}" , graph);
         var dfs = DFS.of(graph);
         dfs.run();
@@ -81,8 +82,15 @@ public class Main {
     }
 
     public static void binarySearchTreeTest(){
-        var bst = new SetBinaryTree<Integer>(List.of(5,8,2,4,3,6));
+        var bst = new SetBinaryTree<Integer>(List.of(5,8,2,4,3,6,1));
         logger.info("BST ORDER_TRAVERSAL: {}" , bst.asList());
+    }
+
+    public static void avlSearchTreeTest(){
+        var bst = new AVLSetBinaryTree<Integer>(List.of(9,6,55, 22, 5,8,2,4,3,6,1));
+        logger.info("BST ORDER_TRAVERSAL: {}" , bst.asList());
+        GraphVisualize.of(bst).withName("AVL TREE GRAPH").build()
+                .display();
     }
 
 }

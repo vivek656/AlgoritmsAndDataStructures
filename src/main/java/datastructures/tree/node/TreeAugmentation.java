@@ -1,12 +1,30 @@
-package datastructures.tree;
+package datastructures.tree.node;
 
 
 import java.util.Objects;
 
 public abstract class TreeAugmentation {
-    final String key;
-    Object value;
+    public final String key;
+    public Object value;
     Object defaultValue;
+
+    public String getKey() {
+        return key;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public Object getDefaultValue() {
+        return defaultValue;
+    }
+
+    @Override
+    public String toString() {
+        return key + "->" +  value;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,5 +1,6 @@
 package datastructures.graph;
 
+import datastructures.common.Graph;
 import org.apache.commons.lang3.RandomUtils;
 import org.graphstream.graph.implementations.AdjacencyListGraph;
 

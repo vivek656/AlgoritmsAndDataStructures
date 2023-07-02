@@ -1,6 +1,8 @@
 package datastructures.graph;
 
 
+import datastructures.common.Graph;
+
 import java.util.*;
 
 /**
@@ -8,7 +10,7 @@ import java.util.*;
  * (u,v) one order pair is called edge
  * Directed Graph
  */
-public class Graph<T> {
+public class DirectedGraph<T> implements Graph<T> {
 
     /**
      * maintaining a map , with vertices and their outgoing vertices .
@@ -17,14 +19,14 @@ public class Graph<T> {
 
 
 
-    public static <E> Graph<E> fromPairs(List<E[]> pairs){
-        return new Graph<>(pairs);
+    public static <E> DirectedGraph<E> fromPairs(List<E[]> pairs){
+        return new DirectedGraph<>(pairs);
     }
-    private Graph (){
+    private DirectedGraph(){
         adjacencyMap = new HashMap<>();
     }
 
-    private Graph(List<T[]> pairs){
+    private DirectedGraph(List<T[]> pairs){
         this();
         for(T[] pair : pairs){
             addEdge(new GraphEdge<>(pair[0],pair[1]));
@@ -57,6 +59,7 @@ public class Graph<T> {
         return res;
     }
 
+    @Override
     public Map<T , Set<GraphEdge<T,T>>> asAdjacencyMap(){
         return Map.copyOf(adjacencyMap);
     }

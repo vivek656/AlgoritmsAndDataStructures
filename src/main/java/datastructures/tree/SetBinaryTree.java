@@ -1,22 +1,27 @@
 package datastructures.tree;
 
 import common.TripleConsumer;
+import datastructures.common.Graph;
+import datastructures.graph.GraphEdge;
+import datastructures.tree.node.BinarySearchTreeNode;
+import datastructures.tree.node.BinaryTreeNode;
+import datastructures.tree.node.TreeAugmentation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 @SuppressWarnings("unchecked")
-public class SetBinaryTree<T> implements Iterable<T> {
+public class SetBinaryTree<T> implements Iterable<T> , Graph<T> {
 
-    private Comparator<T> comparator;
-    private BinarySearchTreeNode<T> root;
+    protected Comparator<T> comparator;
+    protected BinarySearchTreeNode<T> root;
 
     HashMap<String , TreeAugmentation> augmentations;
 
     private static final TripleConsumer<Integer,Integer,Integer,Integer> sizeFunction =
             BinaryTreeUtils::sizeFunction;
     private static final String SIZE_KEY = "SIZE";
-    SetBinaryTree(){
+    public SetBinaryTree(){
         this.augmentations = new HashMap<>();
         TreeAugmentation sizeAugment = new TreeAugmentation(
                 SIZE_KEY, 1, 0
@@ -45,14 +50,9 @@ public class SetBinaryTree<T> implements Iterable<T> {
         build((List<T>) a);
     }
 
-
-    private BinarySearchTreeNode<T> newNode(T data){
+    protected BinarySearchTreeNode<T> newNode(T data){
         BinarySearchTreeNode<T> node = new BinarySearchTreeNode<>(data);
-        augmentations.values().forEach(aug -> {
-            var clazz = aug.value.getClass();
-            node.addAugmentation(aug.key , clazz.cast(aug.defaultValue) , clazz.cast(aug.value) ,
-                    aug::recompute);
-        });
+        BinaryTreeNode.setAugmentationsToNode(node,augmentations);
         return node;
     }
 
@@ -90,5 +90,11 @@ public class SetBinaryTree<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return asList().iterator();
+    }
+
+    @Override
+    public Map<T, Set<GraphEdge<T, T>>> asAdjacencyMap() {
+        if(root==null) return Collections.emptyMap();
+        else return root.asAdjacencyMap();
     }
 }
