@@ -1,17 +1,16 @@
 package common;
 
+import datastructures.array.DynamicArray;
+
+import java.lang.reflect.Array;
+
 public class DSUtil {
 
     private DSUtil(){}
 
-    @SuppressWarnings("unchecked")
-    public static <T> T[]getGenericArray(int length){
-        return (T[]) (new Object[length]);
-    }
-
-    public static <T> void swap(T[] a, Integer i , Integer j){
-        var temp = a[i];
-        a[i] = a[j];
-        a[j] = temp;
+    public static <T> void swap(DynamicArray<T> a, Integer i , Integer j){
+        var temp = a.getAt(i);
+        a.setAt(i , a.getAt(j));
+        a.setAt(j , temp);
     }
 }

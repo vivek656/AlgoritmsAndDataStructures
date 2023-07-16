@@ -1,4 +1,4 @@
-package problemsessionone;
+package datastructures.array;
 
 
 import java.util.*;
@@ -49,14 +49,14 @@ public class DoubleEndedArraySequence<T>  {
         return t;
     }
 
-    public T removeFomLast(T t){
+    public T removeFomLast(){
         T lastElem = getAtLast();
         this.arrays[lastIndex()]  = null;
         this.actualListSize--;
         return lastElem;
     }
 
-    public T removeFromFront(T t){
+    public T removeFromFront(){
         T lastElem = getFirst();
         this.arrays[startIndex]=null;
         this.startIndex--;
@@ -82,14 +82,14 @@ public class DoubleEndedArraySequence<T>  {
     }
 
 
-    public Iterator iterator() {
+    public Iterator<T> iterator() {
         return Arrays.stream(toArray()).iterator();
 
     }
 
 
-    public Object[] toArray() {
-        return Arrays.copyOfRange(arrays , startIndex , lastIndex());
+    public T[] toArray() {
+        return (T[]) Arrays.copyOfRange(arrays , startIndex , lastIndex());
     }
 
 
@@ -104,7 +104,7 @@ public class DoubleEndedArraySequence<T>  {
     private void recomputeSize() {
         if(actualListSize < arrays.length/6 ||
         startIndex == 0 || lastIndex() == arrays.length) {
-            buildInitialArrayWithArray((T[]) toArray());
+            buildInitialArrayWithArray(toArray());
         }
     }
 

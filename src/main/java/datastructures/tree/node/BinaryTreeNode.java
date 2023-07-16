@@ -11,13 +11,14 @@ public class BinaryTreeNode<T> implements Graph<T> {
     protected BinaryTreeNode<T> parent;
     protected BinaryTreeNode<T> left;
     protected BinaryTreeNode<T> right;
-    protected T data;
+    private T data;
 
     protected HashMap<String , TreeAugmentation> augmentations = new HashMap<>();
 
     BinaryTreeNode(T data){
-        this.data = data;
+        this.setData(data);
     }
+
 
     protected <X extends BinaryTreeNode<T>> X getLeft() {
         return (X) left;
@@ -77,7 +78,7 @@ public class BinaryTreeNode<T> implements Graph<T> {
     }
     private void traversalOrderRecursive(List<T> a){
         if(left!=null)left.traversalOrderRecursive(a);
-        if(data!=null)a.add(data);
+        if(getData() !=null)a.add(getData());
         if(right!=null)right.traversalOrderRecursive(a);
     }
 
@@ -88,7 +89,7 @@ public class BinaryTreeNode<T> implements Graph<T> {
         var currentNode = q.peek();
         while (!q.isEmpty()){
             currentNode = q.poll();
-            result.addLast(currentNode.data);
+            result.addLast(currentNode.getData());
             if(currentNode.left!=null)q.add(currentNode.left);
             if(currentNode.right!=null)q.add(currentNode.right);
         }
@@ -96,12 +97,12 @@ public class BinaryTreeNode<T> implements Graph<T> {
 
     }
 
-    private BinaryTreeNode<T> subtreeFirstNodeInTraversalOrder(){
+    public BinaryTreeNode<T> subtreeFirstNodeInTraversalOrder(){
         if(left!=null) return left.subtreeFirstNodeInTraversalOrder();
         else return this;
     }
 
-    private BinaryTreeNode<T> subtreeLastNodeInTraversalOrder(){
+    public BinaryTreeNode<T> subtreeLastNodeInTraversalOrder(){
         if(right!=null) return right.subtreeLastNodeInTraversalOrder();
         else return this;
     }
@@ -131,7 +132,7 @@ public class BinaryTreeNode<T> implements Graph<T> {
         if(parent!=null)parent.maintainAugmentationWayUp();
     }
 
-    protected BinaryTreeNode<T> subtreeInsertBefore(BinaryTreeNode<T> nodeToAdd){
+    public BinaryTreeNode<T> subtreeInsertBefore(BinaryTreeNode<T> nodeToAdd){
         if(left!=null) {
             BinaryTreeNode<T> lastNodeInLeftSubtree = left.subtreeLastNodeInTraversalOrder();
             lastNodeInLeftSubtree.right = nodeToAdd;
@@ -146,7 +147,7 @@ public class BinaryTreeNode<T> implements Graph<T> {
         return nodeToAdd;
     }
 
-    protected BinaryTreeNode<T> subtreeInsertAfter(BinaryTreeNode<T> nodeToAdd){
+    public BinaryTreeNode<T> subtreeInsertAfter(BinaryTreeNode<T> nodeToAdd){
         if(right!=null) {
             BinaryTreeNode<T> firstNodeInRightSubtree = right.subtreeFirstNodeInTraversalOrder();
             firstNodeInRightSubtree.left = nodeToAdd;
@@ -162,9 +163,9 @@ public class BinaryTreeNode<T> implements Graph<T> {
     }
 
     void swapData(BinaryTreeNode<T> a , BinaryTreeNode<T> b){
-        T temp = a.data;
-        a.data = b.data;
-        b.data = temp;
+        T temp = a.getData();
+        a.setData(b.getData());
+        b.setData(temp);
     }
 
     void detach(){
@@ -229,20 +230,28 @@ public class BinaryTreeNode<T> implements Graph<T> {
         BinaryTreeNode<T> currentNode = q.peek();
         while (!q.isEmpty()){
             currentNode = q.poll();
-            adjacencyMap.put(currentNode.data, new HashSet<>());
+            adjacencyMap.put(currentNode.getData(), new HashSet<>());
             if(currentNode.left!=null) {
-                adjacencyMap.get(currentNode.data).add(
-                       new GraphEdge(currentNode.data , currentNode.left.data)
+                adjacencyMap.get(currentNode.getData()).add(
+                       new GraphEdge<>(currentNode.getData(), currentNode.left.getData())
                 );
                 q.add(currentNode.left);
             }
             if(currentNode.right!=null){
-                adjacencyMap.get(currentNode.data).add(
-                        new GraphEdge<>(currentNode.data,currentNode.right.data)
+                adjacencyMap.get(currentNode.getData()).add(
+                        new GraphEdge<>(currentNode.getData(), currentNode.right.getData())
                 );
                 q.add(currentNode.right);
             }
         }
         return adjacencyMap;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }

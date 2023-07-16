@@ -56,6 +56,18 @@ public class AVLSearchTreeNode<T> extends BinarySearchTreeNode<T> {
         return nodeToDelete;
     }
 
+    @Override public BinaryTreeNode<T> subtreeInsertBefore(BinaryTreeNode<T> nodeToAdd){
+        var node = super.subtreeInsertBefore(nodeToAdd);
+        ((AVLSearchTreeNode<T>) node).maintain();
+        return node;
+    }
+
+    @Override public BinaryTreeNode<T> subtreeInsertAfter(BinaryTreeNode<T> nodeToAdd){
+        var node = super.subtreeInsertAfter(nodeToAdd);
+        ((AVLSearchTreeNode<T>) node).maintain();
+        return node;
+    }
+
     public void reBalance(){
         maintainAugmentationWayUp();
         if(getHeight(getLeft()) >= getHeight(getRight()) + 2){

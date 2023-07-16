@@ -1,11 +1,13 @@
-package problemsessionone;
+package problemsessions.problemsessionone;
 
 import algorithms.KarpRabinStringSearch;
+import datastructures.common.PriorityQueue;
 import datastructures.graph.DirectedGraph;
 import datastructures.graph.GraphUtils;
 import datastructures.graph.GraphVisualize;
 import datastructures.graph.search.BFS;
 import datastructures.graph.search.DFS;
+import datastructures.heap.MaxHeap;
 import datastructures.tree.AVLSetBinaryTree;
 import datastructures.tree.SetBinaryTree;
 import org.apache.commons.lang3.RandomUtils;
@@ -15,10 +17,7 @@ import sort.HeapSort;
 import sort.RadixSort;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
@@ -26,7 +25,7 @@ public class Main {
     private static final String LOG_INFO = "{}"; //needed for logging message stub
 
     public static void main(String[] args) {
-        avlSearchTreeTest();
+        heapAsPriorityQTest();
     }
 
     public static void graphTest(){
@@ -78,6 +77,21 @@ public class Main {
         logger.info("ARRAY:BEFORE SORT: {}", integersArray);
         var a = integersArray.toArray(new Integer[]{});
         logger.info("HEAP SORT: {}" , Arrays.toString(HeapSort.sort(a)));
+    }
+
+    public static void  heapAsPriorityQTest(){
+        var integersArray = List.of(1,2,8,9,10,3,4,5,6,7);
+        logger.info("INTEGERS ARRAY: {}" , integersArray);
+        PriorityQueue<Integer> q = new MaxHeap<>(integersArray);
+        var GET_MAX = "GET MAX {}";
+        var DELETE_MAX = "DELETE MAX {}";
+        var INSERT_NEW = "INSERT {} new Max {}";
+        logger.info(GET_MAX , q.findMax() );
+        logger.info(DELETE_MAX, q.deleteMax());
+        logger.info(GET_MAX , q.findMax());
+        q.insert(12);
+        logger.info(INSERT_NEW , 12 , q.findMax());
+
 
     }
 
