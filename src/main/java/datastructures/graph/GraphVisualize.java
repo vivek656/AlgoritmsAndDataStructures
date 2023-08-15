@@ -50,14 +50,14 @@ public class GraphVisualize<T> {
     private void addEdge(GraphEdge<T,T> graphEdge){
         visualGraph.addEdge(
             generateIdForEdge(graphEdge),
-                getNodeName(graphEdge.getStart()),
-                getNodeName(graphEdge.getEnd())
+                getNodeName(graphEdge.start()),
+                getNodeName(graphEdge.end())
         );
     }
 
 
     private String generateIdForEdge(GraphEdge<T,T> edge){
-        return getNodeName(edge.getStart()) + "-" + getNodeName(edge.getEnd())
+        return getNodeName(edge.start()) + "-" + getNodeName(edge.end())
                 + "-" + RandomUtils.nextLong(99,9999);
     }
 

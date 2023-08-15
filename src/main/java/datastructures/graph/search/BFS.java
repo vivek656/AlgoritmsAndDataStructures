@@ -42,7 +42,7 @@ public non-sealed class BFS<T> extends GraphSearch<T> {
         while (!vertexQueue.isEmpty()){
             var u = vertexQueue.poll();
             for (GraphEdge<T,T> graphVertex : adjacencyMap.getOrDefault(u.key , Collections.emptySet()) ){
-                var v = getAttributesFor(graphVertex.getEnd());
+                var v = getAttributesFor(graphVertex.end());
                 if(v.colour == WHITE){
                     v.colour = GRAY;
                     v.distance = u.distance +1;
@@ -90,7 +90,7 @@ public non-sealed class BFS<T> extends GraphSearch<T> {
 
     static class BFSVertexAttributes<E> extends VertexAttributes<E>{
 
-        private static final int INFINITE_STUB = -1;//-1 is takes as substitute for INFINITE
+        private static final int INFINITE_STUB = Integer.MIN_VALUE;
         BFSVertexAttributes<E> predecessor;
         int distance;
 
