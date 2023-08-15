@@ -22,7 +22,7 @@ public class DirectedGraph<T> implements Graph<T> {
     public static <E> DirectedGraph<E> fromPairs(List<E[]> pairs){
         return new DirectedGraph<>(pairs);
     }
-    private DirectedGraph(){
+    protected DirectedGraph(){
         adjacencyMap = new HashMap<>();
     }
 
@@ -33,15 +33,15 @@ public class DirectedGraph<T> implements Graph<T> {
         }
     }
 
-    private void addVertex(T v){
+    public void addVertex(T v){
         if(adjacencyMap.containsKey(v)) return;
         adjacencyMap.put(v , new LinkedHashSet<>());
     }
 
-    private void addEdge(GraphEdge<T,T> edge){
-        addVertex(edge.getStart());
-        addVertex(edge.getEnd());
-        adjPlus(edge.getStart()).add(edge);
+    public void addEdge(GraphEdge<T,T> edge){
+        addVertex(edge.start());
+        addVertex(edge.end());
+        adjPlus(edge.start()).add(edge);
     }
 
     /**
@@ -54,7 +54,7 @@ public class DirectedGraph<T> implements Graph<T> {
     public List<List<T>> asListOfEdges(){
         var res = new  LinkedList<List<T>>();
         for(Map.Entry<T,Set<GraphEdge<T,T>>> entry : this.adjacencyMap.entrySet()){
-            entry.getValue().forEach(val -> res.add(List.of(entry.getKey() , val.getEnd())));
+            entry.getValue().forEach(val -> res.add(List.of(entry.getKey() , val.end())));
         }
         return res;
     }
@@ -62,6 +62,10 @@ public class DirectedGraph<T> implements Graph<T> {
     @Override
     public Map<T , Set<GraphEdge<T,T>>> asAdjacencyMap(){
         return Map.copyOf(adjacencyMap);
+    }
+
+    public boolean containsVertex(T t){
+        return adjacencyMap.containsKey(t);
     }
 
 

@@ -1,22 +1,6 @@
 package datastructures.graph;
 
-public class GraphEdge<T,R> {
-    private final T start ;
-    private final R end ;
-
-
-    public GraphEdge(T start, R end){
-        this.start = start;
-        this.end = end;
-    }
-
-    public R getEnd(){
-        return end;
-    }
-
-    public T getStart(){
-        return start;
-    }
+public record GraphEdge<T, R>(T start, R end) {
 
 
     @Override
