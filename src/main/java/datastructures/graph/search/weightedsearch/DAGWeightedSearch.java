@@ -12,24 +12,22 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.random.RandomGenerator;
 
-public class DAGWeightedSearch<T>  {
+public class DAGWeightedSearch<T> extends WeightedGraphSearch<T> {
 
     private static final RandomGenerator generator = RandomGenerator.getDefault();
 
-    private WeightedDirectedGraph<T> graph;
-    private String weightedFunction;
+
     protected Map<T, Set<GraphEdge<T,T>>> adjacencyMap;
 
-    protected HashMap<T, WeightedVertexAttributes<T>> vertexAttributesMap = new HashMap<>();
 
-     DAGWeightedSearch(WeightedDirectedGraph<T> graph , String functionName){
+     private DAGWeightedSearch(WeightedDirectedGraph<T> graph , String functionName){
          if(Boolean.FALSE.equals(GraphUtils.validateGraphIsADAG(graph)))
              throw new IllegalArgumentException("Graph provided is not A DAG");
          if(graph.getFunctionWithName(functionName)==null)
              throw new IllegalArgumentException(String.format(
                      "No function With Name %s Exists in Graph" , functionName));
          this.graph = graph;
-         this.weightedFunction = functionName;
+         this.weightedFunctionName = functionName;
      }
 
      public static  <E> DAGWeightedSearch<E> of(DirectedGraph<E> graph , BiFunction<E,E,Long> weightFunction){
@@ -37,6 +35,13 @@ public class DAGWeightedSearch<T>  {
          var randomName = randomName();
          weightedGraph.addWeightedFunction(randomName, weightFunction);
          return new DAGWeightedSearch<>(weightedGraph , randomName);
+     }
+
+     public  void withWeightFunction(BiFunction<T,T,Long> weightFunction){
+         Objects.requireNonNull(graph , "Graph is not initialized , please initialized graph, by providing it in static initializer");
+         String function = (weightedFunctionName == null)? randomName() : this.weightedFunctionName;
+         graph.addWeightedFunction(function, weightFunction);
+         this.weightedFunctionName = function;
      }
 
      private static String randomName() {
@@ -67,9 +72,9 @@ public class DAGWeightedSearch<T>  {
          var path = new LinkedList<T>();
          var vertexAttributes = getAttributesFor(end);
          var temp =  vertexAttributes;
-         path.addFirst(temp.key);
+         path.addFirst(temp.getKey());
          while (temp.predecessor!=null){
-             path.addFirst(temp.predecessor.key);
+             path.addFirst(temp.predecessor.getKey());
              temp = temp.predecessor;
          }
          var weight = Objects.equals(vertexAttributes.pathWeight, WeightedVertexAttributes.INFINITE_WEIGHT) ?
@@ -81,50 +86,10 @@ public class DAGWeightedSearch<T>  {
         return vertexAttributesMap.get(u);
     }
 
-
      private void initializeAttributes(){
          adjacencyMap = graph.asAdjacencyMap();
          vertexAttributesMap.clear();
          for(var v : adjacencyMap.keySet())
              vertexAttributesMap.put(v, new WeightedVertexAttributes<>(v));
      }
-
-     public static class WeightedVertexAttributes<E> {
-         private static final Long INFINITE_WEIGHT = Long.MAX_VALUE;
-
-         WeightedVertexAttributes<E> predecessor;
-
-         private Long pathWeight;
-
-         private E key;
-
-         WeightedVertexAttributes(E key){
-             this.key = key;
-             pathWeight = INFINITE_WEIGHT;
-         }
-
-     }
-
-     private Boolean tryToRelaxEdge(GraphEdge<T,T> edge){
-        var v = vertexAttributesMap.get(edge.end());
-        var u = vertexAttributesMap.get(edge.start());
-        var weight = getEdgeWeight(edge);
-        //Infinity + weight  = Infinity
-        if(Objects.equals(u.pathWeight, WeightedVertexAttributes.INFINITE_WEIGHT)){
-            return false;
-        }
-        if(v.pathWeight > u.pathWeight + weight){
-            v.predecessor = u;
-            v.pathWeight = u.pathWeight + weight;
-            return true;
-        }
-        return false;
-     }
-
-     private Long getEdgeWeight(GraphEdge<T,T> edge){
-         return graph.getFunctionWithName(weightedFunction).getValue()
-                 .apply(edge.start(), edge.end());
-     }
-
-
 }
