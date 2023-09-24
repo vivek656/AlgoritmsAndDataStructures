@@ -59,7 +59,7 @@ public class BellmanFordWeightedSearch<T> extends WeightedGraphSearch<T> {
     @Override
     public void run(T source) {
         if (graph == null)
-            throw new IllegalStateException("Cant run dfs , without graph or vertex information");
+            throw new IllegalStateException("Cant run search , without graph or vertex information");
         if(!graph.containsVertex(source))
             throw new IllegalArgumentException("Graph does not contain vertex " + source);
         //if weighted function not given we will generate weight by default weight function
