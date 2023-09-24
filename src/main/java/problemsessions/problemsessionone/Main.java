@@ -159,11 +159,11 @@ public class Main {
         var GET_MAX = "GET MAX {}";
         var DELETE_MAX = "DELETE MAX {}";
         var INSERT_NEW = "INSERT {} new Max {}";
-        logger.info(GET_MAX, q.findMax());
-        logger.info(DELETE_MAX, q.deleteMax());
-        logger.info(GET_MAX, q.findMax());
+        logger.info(GET_MAX, q.peek());
+        logger.info(DELETE_MAX, q.poll());
+        logger.info(GET_MAX, q.peek());
         q.insert(12);
-        logger.info(INSERT_NEW, 12, q.findMax());
+        logger.info(INSERT_NEW, 12, q.poll());
 
 
     }
