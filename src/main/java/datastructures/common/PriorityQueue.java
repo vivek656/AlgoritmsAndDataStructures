@@ -9,4 +9,6 @@ public interface PriorityQueue<T> {
 
     T peek();
 
+    Boolean isEmpty();
+
 }

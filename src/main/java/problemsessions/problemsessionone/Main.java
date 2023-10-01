@@ -9,6 +9,7 @@ import datastructures.graph.search.BFS;
 import datastructures.graph.search.DFS;
 import datastructures.graph.search.weightedsearch.BellmanFordWeightedSearch;
 import datastructures.graph.search.weightedsearch.DAGWeightedSearch;
+import datastructures.graph.search.weightedsearch.DijkstraWeightedSearch;
 import datastructures.heap.MaxHeap;
 import datastructures.tree.AVLSetBinaryTree;
 import datastructures.tree.SetBinaryTree;
@@ -119,6 +120,16 @@ public class Main {
         weightedSearch2.run("a");
         graph.asAdjacencyMap().keySet().forEach(a ->
                 logger.info("BellmanFord PATH AND WEIGHT: {}", weightedSearch2.createPath(a))
+        );
+
+        var dijstraWeightedMapping = new HashMap<String,Integer>();
+        weightedMapping.forEach((key,value) -> dijstraWeightedMapping.put(key , Math.abs(value)));
+        BiFunction<String, String, Long> function2 = (a, b) -> dijstraWeightedMapping.getOrDefault(a+b , longFunction.apply(a,b).intValue()).longValue();
+
+        var weightedSearch3 = DijkstraWeightedSearch.of(graph).withWeightFunction(function2);
+        weightedSearch3.run("a");
+        graph.asAdjacencyMap().keySet().forEach(a ->
+                logger.info("Dijstra PATH AND WEIGHT: {}", weightedSearch3.createPath(a))
         );
 
     }
