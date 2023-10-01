@@ -95,4 +95,9 @@ public class Heap<T> implements PriorityQueue<T> {
     public T peek() {
         return arrayAsCBT.getAt(0);
     }
+
+    @Override
+    public Boolean isEmpty() {
+        return arrayAsCBT.len() == 0;
+    }
 }
