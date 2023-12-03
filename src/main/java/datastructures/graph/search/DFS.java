@@ -25,11 +25,10 @@ public non-sealed class DFS<T> extends GraphSearch<T> {
 
 
     private void initializeAttributes() {
-        if (g == null)
-            throw new IllegalStateException("Failed to Initialize run of dfs , without graph or vertex information");
         adjacencyMap = g.asAdjacencyMap();
         vertexAttributesMap.clear();
         edgeRelation.clear();
+        topologicalOrder.clear();
         for (var v : adjacencyMap.keySet()) {
             vertexAttributesMap.put(v, new DFSVertexAttributes<>(v));
         }
@@ -67,7 +66,7 @@ public non-sealed class DFS<T> extends GraphSearch<T> {
         u.discoveryTime = globalTimer;
         u.colour = GRAY;
         for (var outgoingEdge : adjacencyMap.getOrDefault(u.key, Collections.emptySet())) {
-            var v = getAttributesFor(outgoingEdge.getEnd());
+            var v = getAttributesFor(outgoingEdge.end());
             addEdgeToRelation(u.getEdgeType(v) , outgoingEdge);
             if (v.colour == WHITE) {
                 v.predecessor = u;

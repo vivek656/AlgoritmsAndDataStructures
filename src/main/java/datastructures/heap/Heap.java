@@ -84,7 +84,7 @@ public class Heap<T> implements PriorityQueue<T> {
     }
 
     @Override
-    public T deleteMax() {
+    public T poll() {
         DSUtil.swap(arrayAsCBT , 0 , arrayAsCBT.len()-1);
         var max = arrayAsCBT.deleteLast();
         heapifyDown(arrayAsCBT, 0, arrayAsCBT.len()-1 , comparator);
@@ -92,7 +92,12 @@ public class Heap<T> implements PriorityQueue<T> {
     }
 
     @Override
-    public T findMax() {
+    public T peek() {
         return arrayAsCBT.getAt(0);
+    }
+
+    @Override
+    public Boolean isEmpty() {
+        return arrayAsCBT.len() == 0;
     }
 }

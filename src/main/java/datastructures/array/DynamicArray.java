@@ -55,7 +55,7 @@ public class DynamicArray<T> implements Sequence<T> {
         if(lowerBound < numberOfItems && numberOfItems < upperBound) return;
         var m = Integer.max(numberOfItems , 1) * Math.ceil(1 / fillRatio);
         Object[] a = new Object[(int) m];
-        System.arraycopy(internalArray, 0, a, 0, internalArray.length);
+        System.arraycopy(internalArray, 0, a, 0, size);
         internalArray = a;
         computeBounds();
     }

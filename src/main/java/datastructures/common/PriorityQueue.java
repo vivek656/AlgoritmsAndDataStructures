@@ -5,8 +5,10 @@ public interface PriorityQueue<T> {
 
     T insert(T item);
 
-    T deleteMax();
+    T poll();
 
-    T findMax();
+    T peek();
+
+    Boolean isEmpty();
 
 }
