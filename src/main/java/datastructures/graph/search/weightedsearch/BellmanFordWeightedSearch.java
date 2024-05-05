@@ -9,30 +9,16 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class BellmanFordWeightedSearch<T> extends WeightedGraphSearch<T> {
-
-
-    protected Map<T, Set<GraphEdge<T, T>>> adjacencyMap;
-
-
     private BellmanFordWeightedSearch(WeightedDirectedGraph<T> graph){
         this.graph = graph;
     }
-
-    private static final RandomGenerator generator = RandomGenerator.getDefault();
-
     private Boolean graphContainsNegativeCycle = false;
 
-    private Set<T> negativeWeightWitnesses = new HashSet<>();
-
-
-    private static String randomName() {
-        return String.valueOf(generator.nextLong(1000, 10000000));
-    }
+    private final Set<T> negativeWeightWitnesses = new HashSet<>();
 
 
     public static <E> BellmanFordWeightedSearch<E> of(DirectedGraph<E> graph){
@@ -40,6 +26,7 @@ public class BellmanFordWeightedSearch<T> extends WeightedGraphSearch<T> {
         return new BellmanFordWeightedSearch<>(weightedGraph);
     }
 
+    @Override
     public  BellmanFordWeightedSearch<T> withWeightFunction(BiFunction<T,T,Long> weightFunction){
         Objects.requireNonNull(graph , "Graph is not initialized , please initialized graph, by providing it in static initializer");
         String function = (weightedFunctionName == null)? randomName() : this.weightedFunctionName;
@@ -137,12 +124,13 @@ public class BellmanFordWeightedSearch<T> extends WeightedGraphSearch<T> {
         if(Objects.equals(vertexAttributes.pathWeight, WeightedVertexAttributes.INFINITE_WEIGHT)){
             weight = "INF";
         } else if (Objects.equals(vertexAttributes.pathWeight, WeightedVertexAttributes.INFINITE_NEGATIVE_WEIGHT) ||
-                traversedKeySet.stream().anyMatch( a-> negativeWeightWitnesses.contains(a))
+                traversedKeySet.stream().anyMatch(negativeWeightWitnesses::contains)
         ) {
             weight = "-INF";
         }
         return new ImmutablePair<>(weight , path);
     }
+
 
 
 }

@@ -2,14 +2,12 @@ package datastructures.graph.search.weightedsearch;
 
 import common.Pair;
 import datastructures.graph.DirectedGraph;
-import datastructures.graph.GraphEdge;
 import datastructures.graph.WeightedDirectedGraph;
 import datastructures.heap.HeapWithLabel;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.random.RandomGenerator;
 
 public class DijkstraWeightedSearch<T> extends WeightedGraphSearch<T> {
 
@@ -17,28 +15,22 @@ public class DijkstraWeightedSearch<T> extends WeightedGraphSearch<T> {
 
     private  final Comparator<Pair<T , Long>> keyWeightPairComparator = (o1,o2)-> o2.getSecond().compareTo(o1.getSecond());
 
-    private Map<T, Set<GraphEdge<T,T>>> adjacencyMap;
-    private static final RandomGenerator generator = RandomGenerator.getDefault();
-
-
     private DijkstraWeightedSearch(WeightedDirectedGraph<T> graph ){
         this.graph = graph;
     }
-    private static String randomName() {
-        return String.valueOf(generator.nextLong(1000, 10000000));
-    }
-
 
      public static <E> DijkstraWeightedSearch<E> of(DirectedGraph<E> graph){
         var weightedGraph = new WeightedDirectedGraph<>(graph);
         return new DijkstraWeightedSearch<>(weightedGraph);
     }
 
+    public static <E> DijkstraWeightedSearch<E> of(WeightedDirectedGraph<E> graph){
+        return new DijkstraWeightedSearch<>(graph);
+    }
+
+    @Override
     public  DijkstraWeightedSearch<T> withWeightFunction(BiFunction<T,T,Long> weightFunction){
-        Objects.requireNonNull(graph , "Graph is not initialized , please initialized graph, by providing it in static initializer");
-        String function = (weightedFunctionName == null)? randomName() : this.weightedFunctionName;
-        graph.addWeightedFunction(function, weightFunction);
-        this.weightedFunctionName = function;
+        super.withWeightFunction(weightFunction);
         return this;
     }
 
@@ -55,9 +47,9 @@ public class DijkstraWeightedSearch<T> extends WeightedGraphSearch<T> {
             var u  = heap.poll();
             for (var v : adjacencyMap.getOrDefault(u.getFirst(), Collections.emptySet())){
                 var relaxed = tryToRelaxEdge(v);
-                var attibutes = vertexAttributesMap.get(v.end());
+                var attributes = vertexAttributesMap.get(v.end());
                 if(Boolean.FALSE == heap.isEmpty() && relaxed==Boolean.TRUE)
-                    decreaseDistance((DijkstraWeightedAttribute<T>) attibutes, attibutes.pathWeight);
+                    decreaseDistance((DijkstraWeightedAttribute<T>) attributes, attributes.pathWeight);
             }
         }
     }

@@ -10,15 +10,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.random.RandomGenerator;
 
 public class DAGWeightedSearch<T> extends WeightedGraphSearch<T> {
-
-    private static final RandomGenerator generator = RandomGenerator.getDefault();
-
-
-    protected Map<T, Set<GraphEdge<T,T>>> adjacencyMap;
-
 
      private DAGWeightedSearch(WeightedDirectedGraph<T> graph , String functionName){
          if(Boolean.FALSE.equals(GraphUtils.validateGraphIsADAG(graph)))
@@ -37,17 +30,11 @@ public class DAGWeightedSearch<T> extends WeightedGraphSearch<T> {
          return new DAGWeightedSearch<>(weightedGraph , randomName);
      }
 
-     public  void withWeightFunction(BiFunction<T,T,Long> weightFunction){
-         Objects.requireNonNull(graph , "Graph is not initialized , please initialized graph, by providing it in static initializer");
-         String function = (weightedFunctionName == null)? randomName() : this.weightedFunctionName;
-         graph.addWeightedFunction(function, weightFunction);
-         this.weightedFunctionName = function;
+    @Override
+     public DAGWeightedSearch<T> withWeightFunction(BiFunction<T,T,Long> weightFunction){
+        super.withWeightFunction(weightFunction);
+        return this;
      }
-
-     private static String randomName() {
-         return String.valueOf(generator.nextLong(1000, 10000000));
-     }
-
      public void run(T source){
          if (graph == null)
              throw new IllegalStateException("Cant run dfs , without graph or vertex information");

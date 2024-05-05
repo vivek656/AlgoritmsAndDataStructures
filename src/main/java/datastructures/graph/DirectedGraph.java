@@ -17,8 +17,6 @@ public class DirectedGraph<T> implements Graph<T> {
      */
     private final HashMap<T , Set<GraphEdge<T,T>>> adjacencyMap;
 
-
-
     public static <E> DirectedGraph<E> fromPairs(List<E[]> pairs){
         return new DirectedGraph<>(pairs);
     }
@@ -68,6 +66,12 @@ public class DirectedGraph<T> implements Graph<T> {
         return adjacencyMap.containsKey(t);
     }
 
+    public boolean containsEdge(GraphEdge<T,T> edge){
+        if(!containsVertex(edge.start())) return false;
+        return adjacencyMap.get(edge.start()).stream().anyMatch(edgeinAdjPlus ->
+                edgeinAdjPlus.end().equals(edge.end())
+        );
+    }
 
     @Override
     public String toString() {

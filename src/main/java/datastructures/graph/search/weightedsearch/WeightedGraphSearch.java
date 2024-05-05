@@ -4,9 +4,15 @@ import datastructures.graph.GraphEdge;
 import datastructures.graph.WeightedDirectedGraph;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.random.RandomGenerator;
 
 public abstract class WeightedGraphSearch<T> {
+
+    protected Map<T, Set<GraphEdge<T, T>>> adjacencyMap;
 
     protected HashMap<T, WeightedVertexAttributes<T>> vertexAttributesMap = new HashMap<>();
 
@@ -16,6 +22,15 @@ public abstract class WeightedGraphSearch<T> {
 
     //run to initialize search attributes
     public abstract void run(T source);
+
+    public void runAllPair(){}
+
+    private static final RandomGenerator generator = RandomGenerator.getDefault();
+
+    static String randomName() {
+        return String.valueOf(generator.nextLong(1000, 10000000));
+    }
+
 
     public static class WeightedVertexAttributes<E> {
         protected static final Long INFINITE_WEIGHT = Long.MAX_VALUE;
@@ -39,6 +54,14 @@ public abstract class WeightedGraphSearch<T> {
 
     }
 
+    public  WeightedGraphSearch<T> withWeightFunction(BiFunction<T,T,Long> weightFunction){
+        Objects.requireNonNull(graph , "Graph is not initialized , please initialized graph, by providing it in static initializer");
+        String function = (weightedFunctionName == null)? randomName() : this.weightedFunctionName;
+        graph.addWeightedFunction(function, weightFunction);
+        this.weightedFunctionName = function;
+        return this;
+    }
+
     Boolean tryToRelaxEdge(GraphEdge<T, T> edge) {
         var v = vertexAttributesMap.get(edge.end());
         var u = vertexAttributesMap.get(edge.start());
@@ -55,12 +78,8 @@ public abstract class WeightedGraphSearch<T> {
         return false;
     }
 
-    private Long getEdgeWeight(GraphEdge<T, T> edge) {
+    protected Long getEdgeWeight(GraphEdge<T, T> edge) {
         return graph.getFunctionWithName(weightedFunctionName).getValue()
                 .apply(edge.start(), edge.end());
     }
-
-
-
-
 }

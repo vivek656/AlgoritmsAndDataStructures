@@ -110,6 +110,7 @@ public class AVLSequenceBinaryTree<T> implements List<T> {
 
     @Override
     public boolean remove(Object o) {
+
         return false;
     }
 
@@ -120,12 +121,21 @@ public class AVLSequenceBinaryTree<T> implements List<T> {
 
     @Override
     public boolean addAll(@NotNull Collection<? extends T> c) {
-        return false;
+        for (T t : c){
+            add(t);
+        }
+        return true;
     }
 
     @Override
     public boolean addAll(int index, @NotNull Collection<? extends T> c) {
-        return false;
+        if(size() <= index) throw new IndexOutOfBoundsException(index);
+        var newIndex = index;
+        for (T t : c){
+            root.subtreeInsertAt(newIndex++, t);
+        }
+        return true;
+
     }
 
     @Override
