@@ -32,22 +32,23 @@ public class CountingSort<T>  {
 
     public T[] sort(T[] keysArray){
         var c = new Integer[k];
+        int n = keysArray.length;
         //storing keys at the index of c
         for(T i : keysArray){
             c[getKey(i)] = c[getKey(i)]==null? 1 : c[getKey(i)]+1;
         }
-        var runningSum = 0;
-        // storing how many elements is <= i in keysArray
-        for(int i = 0; i < c.length ; i++){
-            runningSum+= (c[i]!=null ? c[i] : 0);
-            c[i]=runningSum;
+        var runningSum = n;
+        // storing how many elements is <= iin keysArray
+        for(int i = keysArray.length-1; i >= 0 ; i--){
+            runningSum-=(c[i]!=null ? c[i] : 0);
+            c[i] = runningSum;
         }
         //doing in place sorting using above info
         var result = Arrays.copyOf(keysArray,keysArray.length);
-        for(int i = keysArray.length-1; i >= 0 ; i--){
-            var key = getKey(keysArray[i]);
-            result[c[key]-1] = keysArray[i];
-            c[key]--;
+        for (T t : keysArray) {
+            var key = getKey(t);
+            result[c[key]] = t;
+            c[key]++;
         }
         return result;
     }
