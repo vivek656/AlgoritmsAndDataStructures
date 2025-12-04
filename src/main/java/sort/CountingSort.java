@@ -13,15 +13,15 @@ import java.util.function.Function;
  * range of mapper function should be non-zero non-negative Integers
  */
 public class CountingSort<T>  {
-    private final int k;
+    private final int bounds;
 
     private Function<T , Integer> mapper = T::hashCode;
     public CountingSort(Integer bounds , Function<T , Integer> intMapper){
-        k = bounds;
+        this.bounds = bounds;
         this.mapper = intMapper;
     }
     public CountingSort(Integer bounds ){
-        k = bounds;
+        this.bounds = bounds;
     }
 
 
@@ -31,14 +31,14 @@ public class CountingSort<T>  {
 
 
     public T[] sort(T[] keysArray){
-        var c = new Integer[k];
+        var c = new Integer[bounds];
         int n = keysArray.length;
         //storing keys at the index of c
         for(T i : keysArray){
             c[getKey(i)] = c[getKey(i)]==null? 1 : c[getKey(i)]+1;
         }
         var runningSum = n;
-        // storing how many elements is <= iin keysArray
+        // storing how many elements is <= i in keysArray
         for(int i = keysArray.length-1; i >= 0 ; i--){
             runningSum-=(c[i]!=null ? c[i] : 0);
             c[i] = runningSum;
