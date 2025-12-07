@@ -1,8 +1,8 @@
 package datastructures.graph.mst;
 
-import datastructures.graph.edge.GraphEdge;
+import datastructures.graph.edge.EdgeWithWeight;
 
 interface MST<T> {
 
-    Iterable<GraphEdge<T,T>> get();
+    Iterable<EdgeWithWeight<T,T,Double>> get();
 }

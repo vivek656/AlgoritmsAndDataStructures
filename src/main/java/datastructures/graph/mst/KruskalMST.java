@@ -1,10 +1,9 @@
 package datastructures.graph.mst;
 
 import algorithms.UnionFind;
-import datastructures.graph.edge.GraphEdge;
+import datastructures.graph.edge.EdgeWithWeight;
 import datastructures.graph.undirected.UndirectedGraph;
 import datastructures.heap.MinHeap;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,26 +11,11 @@ import java.util.stream.Collectors;
 public class KruskalMST<T> implements MST<T> {
 
 
-    private static class EdgeWithWeight<T> implements Comparable<EdgeWithWeight<T>> {
-        GraphEdge<T, T> edge;
-        Long weight;
-
-        @Override
-        public int compareTo(@NotNull EdgeWithWeight<T> o) {
-            return weight.compareTo(o.weight);
-        }
-
-        EdgeWithWeight(GraphEdge<T, T> edge, Long weight) {
-            this.edge = edge;
-            this.weight = weight;
-        }
-    }
-
     private final UndirectedGraph<T> graph;
     private final HashMap<T, Integer> vertexIntegerMap;
     private final UnionFind UF;
-    private final MinHeap<EdgeWithWeight<T>> heap;
-    private final Queue<GraphEdge<T, T>> mst;
+    private final MinHeap<EdgeWithWeight<T,T,Double>> heap;
+    private final Queue<EdgeWithWeight<T,T, Double>> mst;
 
 
     public KruskalMST(UndirectedGraph<T> graph) {
@@ -47,7 +31,7 @@ public class KruskalMST<T> implements MST<T> {
 
         heap = new MinHeap<>(
                 graph.asListOfEdges().stream().map(
-                        a -> new EdgeWithWeight<>(a, graph.getWeight(a.start(), a.end()))
+                        a -> new EdgeWithWeight<T,T,Double>(a, graph.getWeight(a.start(), a.end()))
                 ).collect(Collectors.toList())
         );
 
@@ -58,12 +42,12 @@ public class KruskalMST<T> implements MST<T> {
         long vertices = graph.vertices();
 
         while (!heap.isEmpty() && mst.size() < vertices-1) {
-            EdgeWithWeight<T> current = heap.poll();
+            EdgeWithWeight<T,T,Double> current = heap.poll();
             T start = current.edge.start();
             T end = current.edge.end();
             if(isConnected(start, end)) continue;
             union(start, end);
-            mst.add(current.edge);
+            mst.add(current);
         }
     }
 
@@ -84,7 +68,7 @@ public class KruskalMST<T> implements MST<T> {
 
 
     @Override
-    public Iterable<GraphEdge<T, T>> get() {
+    public Iterable<EdgeWithWeight<T, T, Double>> get() {
         return new LinkedList<>(mst);
     }
 }

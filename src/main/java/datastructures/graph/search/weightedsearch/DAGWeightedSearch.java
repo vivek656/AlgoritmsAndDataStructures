@@ -21,7 +21,7 @@ public class DAGWeightedSearch<T> extends WeightedGraphSearch<T> {
 
 
      private DAGWeightedSearch(WeightedDirectedGraph<T> graph , String functionName){
-         if(Boolean.FALSE.equals(GraphUtils.validateGraphIsADAG(graph)))
+         if(!GraphUtils.validateGraphIsADAG(graph))
              throw new IllegalArgumentException("Graph provided is not A DAG");
          if(graph.getFunctionWithName(functionName)==null)
              throw new IllegalArgumentException(String.format(
@@ -30,14 +30,14 @@ public class DAGWeightedSearch<T> extends WeightedGraphSearch<T> {
          this.weightedFunctionName = functionName;
      }
 
-     public static  <E> DAGWeightedSearch<E> of(DirectedGraph<E> graph , BiFunction<E,E,Long> weightFunction){
+     public static  <E> DAGWeightedSearch<E> of(DirectedGraph<E> graph , BiFunction<E,E,Number> weightFunction){
          var weightedGraph = new WeightedDirectedGraph<>(graph);
          var randomName = randomName();
          weightedGraph.addWeightedFunction(randomName, weightFunction);
          return new DAGWeightedSearch<>(weightedGraph , randomName);
      }
 
-     public  void withWeightFunction(BiFunction<T,T,Long> weightFunction){
+     public  void withWeightFunction(BiFunction<T,T,Number> weightFunction){
          Objects.requireNonNull(graph , "Graph is not initialized , please initialized graph, by providing it in static initializer");
          String function = (weightedFunctionName == null)? randomName() : this.weightedFunctionName;
          graph.addWeightedFunction(function, weightFunction);

@@ -57,7 +57,7 @@ public abstract class WeightedGraphSearch<T> {
 
     private Long getEdgeWeight(GraphEdge<T, T> edge) {
         return graph.getFunctionWithName(weightedFunctionName).getValue()
-                .apply(edge.start(), edge.end());
+                .apply(edge.start(), edge.end()).longValue();
     }
 
 

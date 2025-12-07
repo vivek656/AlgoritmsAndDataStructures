@@ -72,7 +72,7 @@ public class Main {
             dfs.run();
             logger.info("DFS TOPOLOGICAL SORT: {}", dfs.topologicalSort());
         });
-        BiFunction<String, String, Long> function = (a, b) -> a.codePoints().sum() + (long) b.codePoints().sum();
+        BiFunction<String, String, Number> function = (a, b) -> a.codePoints().sum() + (long) b.codePoints().sum();
 
         var weightedSearch = DAGWeightedSearch.of(graph, function);
 
@@ -107,7 +107,7 @@ public class Main {
 
 
         BiFunction<String, String, Long> longFunction = (a, b) -> a.codePoints().sum() + (long) b.codePoints().sum();
-        BiFunction<String, String, Long> function = (a, b) -> weightedMapping.getOrDefault(a+b , longFunction.apply(a,b).intValue()).longValue();
+        BiFunction<String, String, Number> function = (a, b) -> weightedMapping.getOrDefault(a+b , longFunction.apply(a,b).intValue()).longValue();
 
         try {
             var weightedSearch = DAGWeightedSearch.of(graph, function);

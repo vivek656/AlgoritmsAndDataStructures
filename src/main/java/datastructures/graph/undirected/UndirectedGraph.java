@@ -8,7 +8,7 @@ import java.util.*;
 
 public class UndirectedGraph<T> extends WeightedDirectedGraph<T> {
 
-    HashMap<T , HashMap<T,Long>> edgeWeights = new HashMap<>();
+    private final HashMap<T , HashMap<T,Double>> edgeWeights = new HashMap<>();
     static final String edgeWeightFunction = "UndirectedGraph_edgeWeight";
 
     public UndirectedGraph() {
@@ -21,7 +21,8 @@ public class UndirectedGraph<T> extends WeightedDirectedGraph<T> {
      * @param graph
      */
     public UndirectedGraph(UndirectedGraph<T> graph) {
-        super(graph);
+        this();
+        graph.asListOfEdges().forEach(this::addEdge);
         // this is needed so that new function correctly call the map in this class
         addWeightedFunction(edgeWeightFunction , this::getEdgeWeight);
         this.edgeWeights.putAll(graph.edgeWeights);
@@ -29,29 +30,33 @@ public class UndirectedGraph<T> extends WeightedDirectedGraph<T> {
 
     @Override
     public void addEdge(GraphEdge<T,T> edge){
-        addEdge(edge.start(), edge.end());
+        addEdgeWithWeight(edge.start(), edge.end(), 1.0);
     }
 
-    public void addEdge(T start, T end) {
+    public void addEdgeWithWeight(T start, T end, Double weight) {
+        Objects.requireNonNull(start);
+        Objects.requireNonNull(end);
+        Objects.requireNonNull(weight);
+
         GraphEdge<T,T> edge = new GraphEdge<>(start, end);
-        addEdge(edge);
+        super.addEdge(edge);
         GraphEdge<T,T> edge2 = new GraphEdge<>(end, start);
-        addEdge(edge2);
+        super.addEdge(edge2);
         edgeWeights.putIfAbsent(start, new HashMap<>());
         edgeWeights.putIfAbsent(end, new HashMap<>());
-        edgeWeights.get(start).putIfAbsent(end, 1L);
-        edgeWeights.get(end).putIfAbsent(start, 1L);
+        edgeWeights.get(start).put(end, weight);
+        edgeWeights.get(end).put(start, weight);
     }
 
 
-    private Long getEdgeWeight(T start, T end) {
-        HashMap<T,Long> map = edgeWeights.get(start);
-        if(map == null) { return 1L;}
-        return Optional.ofNullable(map.get(end)).orElse(1L);
+    private Double getEdgeWeight(T start, T end) {
+        HashMap<T,Double> map = edgeWeights.get(start);
+        if(map == null) { return 1.0;}
+        return Optional.ofNullable(map.get(end)).orElse(1.0);
     }
 
 
-    public Long getWeight(T start, T end) {
+    public Double getWeight(T start, T end) {
         return getEdgeWeight(start, end);
     }
 
@@ -69,11 +74,6 @@ public class UndirectedGraph<T> extends WeightedDirectedGraph<T> {
             doneVertex.add(entry.getKey());
         }
         return list;
-    }
-
-    @Override
-    public long vertices() {
-        return super.vertices() / 2;
     }
 
     @Override

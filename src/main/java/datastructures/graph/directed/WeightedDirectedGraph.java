@@ -8,7 +8,7 @@ import java.util.function.BiFunction;
 
 public class WeightedDirectedGraph<T> extends DirectedGraph<T> {
 
-    private HashMap<String , BiFunction<T,T , Long>> weightedFunctionMap;
+    private HashMap<String , BiFunction<T,T , Number>> weightedFunctionMap;
     private static final String  DEFAULT_WEIGHT_FUNCTION_NAME = "default_weight";
 
     public WeightedDirectedGraph(DirectedGraph<T> graph){
@@ -31,7 +31,7 @@ public class WeightedDirectedGraph<T> extends DirectedGraph<T> {
     }
 
 
-    public void addWeightedFunction(String functionName , BiFunction<T,T,Long> function){
+    public void addWeightedFunction(String functionName , BiFunction<T,T,Number> function){
         if(DEFAULT_WEIGHT_FUNCTION_NAME.equals(functionName))
             throw new IllegalArgumentException(
                     String.format("Invalid function name: %s Name clashes With default weighted function of Graph , provide different name" , functionName)
@@ -39,20 +39,20 @@ public class WeightedDirectedGraph<T> extends DirectedGraph<T> {
         weightedFunctionMap.put(functionName , function);
     }
 
-    private Long getEdgeWeight(GraphEdge<T,T> edge , String weightedFunctionName){
+    private Number getEdgeWeight(GraphEdge<T,T> edge , String weightedFunctionName){
         return weightedFunctionMap.getOrDefault(weightedFunctionName , (a,b) -> null)
                 .apply(edge.start(), edge.end());
     }
 
-    private Long getEdgeWeight(GraphEdge<T,T> edge){
+    private Number getEdgeWeight(GraphEdge<T,T> edge){
         return getEdgeWeight(edge, DEFAULT_WEIGHT_FUNCTION_NAME);
     }
 
-    public ObjectKeyWrapper<String , BiFunction<T,T, Long>> getDefaultFunctionWithName(){
+    public ObjectKeyWrapper<String , BiFunction<T,T, Number>> getDefaultFunctionWithName(){
         return new ObjectKeyWrapper<>(DEFAULT_WEIGHT_FUNCTION_NAME, weightedFunctionMap.get(DEFAULT_WEIGHT_FUNCTION_NAME));
     }
 
-    public ObjectKeyWrapper<String , BiFunction<T,T, Long>> getFunctionWithName(String functionName){
+    public ObjectKeyWrapper<String , BiFunction<T,T, Number>> getFunctionWithName(String functionName){
         return new ObjectKeyWrapper<>(functionName, weightedFunctionMap.get(functionName));
     }
 

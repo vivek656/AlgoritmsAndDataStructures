@@ -52,7 +52,7 @@ public class UnionFind {
     }
 
     private void validate(int x) {
-        if (x < 0 || x >= uniqueSets) {
+        if (x < 0 || x >= parent.length) {
             throw new IllegalArgumentException("Index: " + x + ", is out of range. size: " + parent.length );
         }
     }

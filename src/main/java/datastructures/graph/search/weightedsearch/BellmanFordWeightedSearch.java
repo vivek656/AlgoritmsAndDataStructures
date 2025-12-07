@@ -40,7 +40,7 @@ public class BellmanFordWeightedSearch<T> extends WeightedGraphSearch<T> {
         return new BellmanFordWeightedSearch<>(weightedGraph);
     }
 
-    public  BellmanFordWeightedSearch<T> withWeightFunction(BiFunction<T,T,Long> weightFunction){
+    public  BellmanFordWeightedSearch<T> withWeightFunction(BiFunction<T,T,Number> weightFunction){
         Objects.requireNonNull(graph , "Graph is not initialized , please initialized graph, by providing it in static initializer");
         String function = (weightedFunctionName == null)? randomName() : this.weightedFunctionName;
         graph.addWeightedFunction(function, weightFunction);
@@ -48,7 +48,7 @@ public class BellmanFordWeightedSearch<T> extends WeightedGraphSearch<T> {
         return this;
     }
 
-    public  void withWeightFunctionAndName(BiFunction<T,T,Long> weightFunction , String weightedFunctionName){
+    public  void withWeightFunctionAndName(BiFunction<T,T,Number> weightFunction , String weightedFunctionName){
         Objects.requireNonNull(graph , "Graph is not initialized , please initialized graph, by providing it in static initializer");
         this.weightedFunctionName = weightedFunctionName;
         graph.addWeightedFunction(this.weightedFunctionName, weightFunction);

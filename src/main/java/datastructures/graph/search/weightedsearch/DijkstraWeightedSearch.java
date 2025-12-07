@@ -34,10 +34,10 @@ public class DijkstraWeightedSearch<T> extends WeightedGraphSearch<T> {
         return new DijkstraWeightedSearch<>(weightedGraph);
     }
 
-    public  DijkstraWeightedSearch<T> withWeightFunction(BiFunction<T,T,Long> weightFunction){
+    public <R extends Number> DijkstraWeightedSearch<T> withWeightFunction(BiFunction<T,T,R> weightFunction){
         Objects.requireNonNull(graph , "Graph is not initialized , please initialized graph, by providing it in static initializer");
         String function = (weightedFunctionName == null)? randomName() : this.weightedFunctionName;
-        graph.addWeightedFunction(function, weightFunction);
+        graph.addWeightedFunction(function, (weightFunction::apply));
         this.weightedFunctionName = function;
         return this;
     }
@@ -50,7 +50,7 @@ public class DijkstraWeightedSearch<T> extends WeightedGraphSearch<T> {
     @Override
     public void run(T source) {
         initializeAttributes(source);
-        int totalvertex = adjacencyMap.keySet().size();
+        int totalvertex = adjacencyMap.size();
         for (int i =0 ; i < totalvertex ; i++){
             var u  = heap.poll();
             for (var v : adjacencyMap.getOrDefault(u.getFirst(), Collections.emptySet())){
