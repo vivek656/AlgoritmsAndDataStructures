@@ -1,5 +1,6 @@
-package datastructures.graph;
+package datastructures.graph.utils;
 
+import datastructures.graph.directed.DirectedGraph;
 import datastructures.graph.search.DFS;
 
 public class GraphUtils {

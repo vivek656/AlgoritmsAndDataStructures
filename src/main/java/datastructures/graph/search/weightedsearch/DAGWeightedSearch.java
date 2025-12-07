@@ -1,9 +1,9 @@
 package datastructures.graph.search.weightedsearch;
 
-import datastructures.graph.DirectedGraph;
-import datastructures.graph.GraphEdge;
-import datastructures.graph.GraphUtils;
-import datastructures.graph.WeightedDirectedGraph;
+import datastructures.graph.directed.DirectedGraph;
+import datastructures.graph.edge.GraphEdge;
+import datastructures.graph.utils.GraphUtils;
+import datastructures.graph.directed.WeightedDirectedGraph;
 import datastructures.graph.search.DFS;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;

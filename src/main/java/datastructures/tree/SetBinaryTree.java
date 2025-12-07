@@ -2,7 +2,7 @@ package datastructures.tree;
 
 import common.TripleConsumer;
 import datastructures.common.Graph;
-import datastructures.graph.GraphEdge;
+import datastructures.graph.edge.GraphEdge;
 import datastructures.tree.node.BinarySearchTreeNode;
 import datastructures.tree.node.BinaryTreeNode;
 import datastructures.tree.node.TreeAugmentation;
@@ -15,12 +15,14 @@ public class SetBinaryTree<T> implements Iterable<T> , Graph<T> {
 
     protected Comparator<T> comparator;
     protected BinarySearchTreeNode<T> root;
-
-    HashMap<String , TreeAugmentation> augmentations;
-
     private static final TripleConsumer<Integer,Integer,Integer,Integer> sizeFunction =
             BinaryTreeUtils::sizeFunction;
     private static final String SIZE_KEY = "SIZE";
+
+
+    private Map<T, Set<GraphEdge<T, T>>> adjacencyMap = null;
+    protected final HashMap<String , TreeAugmentation> augmentations;
+
     public SetBinaryTree(){
         this.augmentations = new HashMap<>();
         TreeAugmentation sizeAugment = new TreeAugmentation(
@@ -92,9 +94,29 @@ public class SetBinaryTree<T> implements Iterable<T> , Graph<T> {
         return asList().iterator();
     }
 
-    @Override
+
     public Map<T, Set<GraphEdge<T, T>>> asAdjacencyMap() {
         if(root==null) return Collections.emptyMap();
-        else return root.asAdjacencyMap();
+        if(adjacencyMap!=null) return adjacencyMap;
+        else{
+            this.adjacencyMap =  root.asAdjacencyMap();
+            return  adjacencyMap;
+        }
     }
+
+    @Override
+    public long vertices() {
+        return asAdjacencyMap().size();
+    }
+
+    @Override
+    public long edges() {
+        return asAdjacencyMap().values()
+                .stream()
+                .map(a -> Long.valueOf(a.size()))
+                .reduce(Long::sum)
+                .orElse(0L);
+    }
+
+
 }

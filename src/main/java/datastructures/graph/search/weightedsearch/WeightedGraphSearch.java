@@ -1,7 +1,7 @@
 package datastructures.graph.search.weightedsearch;
 
-import datastructures.graph.GraphEdge;
-import datastructures.graph.WeightedDirectedGraph;
+import datastructures.graph.edge.GraphEdge;
+import datastructures.graph.directed.WeightedDirectedGraph;
 
 import java.util.HashMap;
 import java.util.Objects;

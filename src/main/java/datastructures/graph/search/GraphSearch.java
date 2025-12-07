@@ -2,7 +2,7 @@ package datastructures.graph.search;
 
 import com.google.common.base.Objects;
 import datastructures.common.Graph;
-import datastructures.graph.GraphEdge;
+import datastructures.graph.edge.GraphEdge;
 
 import java.util.HashMap;
 import java.util.Map;

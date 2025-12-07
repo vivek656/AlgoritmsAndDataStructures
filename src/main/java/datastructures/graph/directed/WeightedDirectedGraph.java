@@ -1,26 +1,33 @@
-package datastructures.graph;
+package datastructures.graph.directed;
 
 import common.ObjectKeyWrapper;
+import datastructures.graph.edge.GraphEdge;
 
 import java.util.HashMap;
 import java.util.function.BiFunction;
 
-public class WeightedDirectedGraph<T> extends DirectedGraph<T>{
+public class WeightedDirectedGraph<T> extends DirectedGraph<T> {
 
     private HashMap<String , BiFunction<T,T , Long>> weightedFunctionMap;
     private static final String  DEFAULT_WEIGHT_FUNCTION_NAME = "default_weight";
 
     public WeightedDirectedGraph(DirectedGraph<T> graph){
         super();
-        graph.asListOfEdges().stream().map(pair -> new GraphEdge<>(pair.get(0) , pair.get(1)))
-                        .forEach(this::addEdge);
-        initializeWeightedFunctionMap();
+        graph.asListOfEdges().forEach(this::addEdge);
+        if(graph.getClass() == WeightedDirectedGraph.class) {
+            initializeWeightedFunctionMap((WeightedDirectedGraph<T>) graph);
+        } else initializeWeightedFunctionMap();
     }
 
     private void  initializeWeightedFunctionMap(){
         this.weightedFunctionMap = new HashMap<>();
         this.weightedFunctionMap.put(DEFAULT_WEIGHT_FUNCTION_NAME ,
                 ((a,b) -> 1L));
+    }
+
+    private void  initializeWeightedFunctionMap(WeightedDirectedGraph<T> graph) {
+        this.weightedFunctionMap = new HashMap<>();
+        this.weightedFunctionMap.putAll(graph.weightedFunctionMap);
     }
 
 

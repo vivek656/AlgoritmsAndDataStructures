@@ -2,9 +2,9 @@ package problemsessions.problemsessionone;
 
 import algorithms.KarpRabinStringSearch;
 import datastructures.common.PriorityQueue;
-import datastructures.graph.DirectedGraph;
-import datastructures.graph.GraphUtils;
-import datastructures.graph.GraphVisualize;
+import datastructures.graph.directed.DirectedGraph;
+import datastructures.graph.utils.GraphUtils;
+import datastructures.graph.visualize.GraphVisualize;
 import datastructures.graph.search.BFS;
 import datastructures.graph.search.DFS;
 import datastructures.graph.search.weightedsearch.BellmanFordWeightedSearch;

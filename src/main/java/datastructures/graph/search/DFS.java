@@ -1,8 +1,8 @@
 package datastructures.graph.search;
 
 import com.google.common.base.Objects;
-import datastructures.graph.DirectedGraph;
-import datastructures.graph.GraphEdge;
+import datastructures.graph.directed.DirectedGraph;
+import datastructures.graph.edge.GraphEdge;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 

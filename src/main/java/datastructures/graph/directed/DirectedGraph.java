@@ -1,7 +1,8 @@
-package datastructures.graph;
+package datastructures.graph.directed;
 
 
 import datastructures.common.Graph;
+import datastructures.graph.edge.GraphEdge;
 
 import java.util.*;
 
@@ -12,15 +13,18 @@ import java.util.*;
  */
 public class DirectedGraph<T> implements Graph<T> {
 
+    private Long edges;
     /**
      * maintaining a map , with vertices and their outgoing vertices .
      */
     private final HashMap<T , Set<GraphEdge<T,T>>> adjacencyMap;
 
-
-
     public static <E> DirectedGraph<E> fromPairs(List<E[]> pairs){
         return new DirectedGraph<>(pairs);
+    }
+
+    public static  <E> DirectedGraph<E> emptyGraph() {
+        return new DirectedGraph<>();
     }
     protected DirectedGraph(){
         adjacencyMap = new HashMap<>();
@@ -42,6 +46,7 @@ public class DirectedGraph<T> implements Graph<T> {
         addVertex(edge.start());
         addVertex(edge.end());
         adjPlus(edge.start()).add(edge);
+        calcEdges();
     }
 
     /**
@@ -51,10 +56,10 @@ public class DirectedGraph<T> implements Graph<T> {
         return this.adjacencyMap.getOrDefault(u , new LinkedHashSet<>());
     }
 
-    public List<List<T>> asListOfEdges(){
-        var res = new  LinkedList<List<T>>();
+    public List<GraphEdge<T,T>> asListOfEdges(){
+        var res = new  LinkedList<GraphEdge<T,T>>();
         for(Map.Entry<T,Set<GraphEdge<T,T>>> entry : this.adjacencyMap.entrySet()){
-            entry.getValue().forEach(val -> res.add(List.of(entry.getKey() , val.end())));
+            res.addAll(entry.getValue());
         }
         return res;
     }
@@ -62,6 +67,16 @@ public class DirectedGraph<T> implements Graph<T> {
     @Override
     public Map<T , Set<GraphEdge<T,T>>> asAdjacencyMap(){
         return Map.copyOf(adjacencyMap);
+    }
+
+    @Override
+    public long vertices() {
+        return adjacencyMap.size();
+    }
+
+    @Override
+    public long edges() {
+        return edges;
     }
 
     public boolean containsVertex(T t){
@@ -77,4 +92,15 @@ public class DirectedGraph<T> implements Graph<T> {
         sb.append("}");
         return sb.toString();
     }
+
+    private void calcEdges(){
+        this.edges = adjacencyMap.values()
+                .stream()
+                .map(a -> Long.valueOf(a.size()))
+                .reduce(Long::sum)
+                .orElse(0L);
+
+    }
+
+
 }

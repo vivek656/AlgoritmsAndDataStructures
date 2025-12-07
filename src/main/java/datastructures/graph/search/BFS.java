@@ -1,7 +1,7 @@
 package datastructures.graph.search;
 
-import datastructures.graph.DirectedGraph;
-import datastructures.graph.GraphEdge;
+import datastructures.graph.directed.DirectedGraph;
+import datastructures.graph.edge.GraphEdge;
 
 import java.util.*;
 

@@ -1,13 +1,12 @@
 package datastructures.tree.node;
 
 import common.TripleConsumer;
-import datastructures.common.Graph;
-import datastructures.graph.GraphEdge;
+import datastructures.graph.edge.GraphEdge;
 
 import java.util.*;
 
 @SuppressWarnings("unchecked")
-public class BinaryTreeNode<T> implements Graph<T> {
+public class BinaryTreeNode<T> {
     protected BinaryTreeNode<T> parent;
     protected BinaryTreeNode<T> left;
     protected BinaryTreeNode<T> right;
@@ -222,7 +221,7 @@ public class BinaryTreeNode<T> implements Graph<T> {
         maintainAugmentationWayUp();
     }
 
-    @Override
+
     public Map<T, Set<GraphEdge<T, T>>> asAdjacencyMap() {
         Queue<BinaryTreeNode<T>> q = new LinkedList<>();
         q.add(this);

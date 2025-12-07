@@ -1,9 +1,9 @@
 package datastructures.graph.search.weightedsearch;
 
 import common.Pair;
-import datastructures.graph.DirectedGraph;
-import datastructures.graph.GraphEdge;
-import datastructures.graph.WeightedDirectedGraph;
+import datastructures.graph.directed.DirectedGraph;
+import datastructures.graph.edge.GraphEdge;
+import datastructures.graph.directed.WeightedDirectedGraph;
 import datastructures.heap.HeapWithLabel;
 import org.jetbrains.annotations.NotNull;
 
